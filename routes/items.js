@@ -39,7 +39,8 @@ router.post('/', async (req,res) => {
     //validation
     const schema = {
         name_items: 'string',
-        price: 'number'
+        price: 'number',
+        id_user: 'number'
     }
     const validate = v.validate(req.body, schema)
     if (validate.length) {
@@ -80,7 +81,6 @@ router.put('/:id', async (req,res)=>{
 });
 
 //DELETE
-//GET BY DATA ID_ITEMS
 router.delete('/:id', async(req,res) =>{
     const id = req.params.id
     let item = await items.findByPk(id)

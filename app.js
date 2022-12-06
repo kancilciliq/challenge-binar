@@ -20,4 +20,23 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/items', itemsRouter);
 
+//internal eror handling
+app.use((err,req,res,next)=>{
+    console.log(err);
+
+    res.status(500).json({
+        status: 'fail',
+        error : err.message
+    })
+})
+
+//404 handler
+app.use((req,res,next)=>{
+    res.status(404).json({
+        status: 'fail',
+        error: 'not found'
+    })
+})
+
+
 module.exports = app;

@@ -1,31 +1,34 @@
-const {Sequelize, DataTypes}= require('sequelize');
-
-module.exports = (Sequelize, DataTypes) =>{
-    const Items = Sequelize.define(
-        'items',{
-          id_items: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-            allowNull: false
-          },
-          name_items:{
-            type: DataTypes.STRING,
-          },
-          price:{
-            type: DataTypes.INTEGER
-          },
-          createdAt:{
-            type: DataTypes.DATE,
-            allowNull: false
-          },
-          updatedAt:{
-            type: DataTypes.DATE,
-            allowNull: false
-          }
-        },{
-            tableName: "items"
-        }
-    );
-    return Items;
-}
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class items extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      this.belongsTo(models.users, {as: 'users', foreignKey: 'id_user'})
+    }
+  }
+  items.init({
+    name_item: DataTypes.STRING,
+    price: DataTypes.INTEGER,
+    id_user: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id'
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }
+  }, {
+    sequelize,
+    modelName: 'items',
+    underscored: true
+  });
+  return items;
+};
